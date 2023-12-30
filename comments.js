@@ -1,53 +1,25 @@
-// create web server with express
+//create web server
 const express = require('express');
-const app = express();
-// create a port
-const port = 3000;
-// create a path
-const path = require('path');
-// create a body parser
-const bodyParser = require('body-parser');
-// create a mongoose
-const mongoose = require('mongoose');
-// connect to database
-mongoose.connect('mongodb://localhost:27017/comments', { useNewUrlParser: true });
-// create a schema
-const Schema = mongoose.Schema;
-// create a schema
-const commentSchema = new Schema({
-    name: String,
-    comment: String
+const router = express.Router();
+
+//get comments
+router.get('/', (req, res) => {
+    res.send('get comments');
 });
-// create a model
-const Comment = mongoose.model('Comment', commentSchema);
-// use body parser
-app.use(bodyParser.urlencoded({ extended: true }));
-// use body parser
-app.use(bodyParser.json());
-// use express
-app.use(express.static('public'));
-// get request
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname + '/index.html'));
+
+//add comments
+router.post('/', (req, res) => {
+    res.send('add comments');
 });
-// post request
-app.post('/comment', (req, res) => {
-    const comment = new Comment(req.body);
-    comment.save()
-        .then(() => {
-            res.redirect('/');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+
+//update comments
+router.put('/:id', (req, res) => {
+    res.send('update comments');
 });
-// get request
-app.get('/comment', (req, res) => {
-    Comment.find()
-        .then((comments) => {
-            res.json(comments);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+
+//delete comments
+router.delete('/:id', (req, res) => {
+    res.send('delete comments');
 });
+
+module.exports = router;
